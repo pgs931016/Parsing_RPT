@@ -3,7 +3,7 @@ clc; clear; close all;
 
 %% Interface
 
-data_folder = '/Users/g.park/Library/CloudStorage/GoogleDrive-gspark@kentech.ac.kr/공유 드라이브/Battery Software Lab/Data/Hyundai_dataset/RPT_GITT제외/HNE_FCC_(6)_RPT';
+data_folder = '/Users/g.park/Library/CloudStorage/GoogleDrive-gspark@kentech.ac.kr/공유 드라이브/Battery Software Lab/Data/Hyundai_dataset/RPT_GITT제외/HNE_AHC_(4)_RPT';
 
 % Replace 'RAW' with 'Processed_Data' in the path
 save_path = strrep(data_folder, 'Data', 'Processed_data');
@@ -122,6 +122,9 @@ end
 
 
 
+
+%RPT- formation
+
 Cycle = 4; 
 indices = [];
 for j = 1:length(data)
@@ -149,7 +152,7 @@ end
 
 
 
-
+% RPT-OCV
 Vmin = 2.5; %AHC =0.01;
 cutoff1 = -0.05;
 indices = [];
@@ -179,7 +182,7 @@ end
 
 
 
-
+%RPT-CRATE
 Crate = -6; %AHC = 6
 indices = [];
 for j = 1:length(data)
@@ -208,7 +211,7 @@ end
 
 
 
-
+%RPT-DCIR
 Vmin = 2.5; %AHC =0.01;
 cutoff2 = -0.2;
 indices = [];
@@ -236,9 +239,50 @@ end
 
 
 
-OCV = OCV(index1:index2+1)
+%RPT 범위
+FORMATION = FORMATION(1:index1);
+OCV = OCV(index1:index2+1);
 CRATE = CRATE(index4+1:index3+1);
 DCIR = DCIR(index2+1:index4+1);
 
 
 
+
+
+
+% 
+% width = 6;     % Width in inches
+% height = 6;    % Height in inches
+% alw = 2;    % AxesLineWidth
+% fsz = 20;      % Fontsize
+% lw = 2;      % LineWidth
+% msz = 16;       % MarkerSize
+% pos = get(gcf, 'Position');
+% set(gcf, 'Position', [pos(1) pos(2) width*100, height*100]); %<- Set size
+% set(gca, 'FontSize', fsz, 'LineWidth', alw); %<- Set properties
+for i = 1:length(DCIR)    
+    figure(2)
+% 
+% plot(OCV (i).t/3600, OCV (i).V, '-')
+
+% ylabel('voltage (V)')
+% hold on;
+xlabel('time (hours)')
+%        yyaxis right
+        plot( DCIR(i).t/3600, DCIR(i).I/I_1C,'-')
+%         yyaxis right
+        ylabel('current (C)')
+%         xlim([0, 1]);
+         ylim([-1.1, 1.1])
+hold on;
+
+% 
+% legend('OCPn','OCPp','Location','northwest')
+
+
+
+print('OCV fig2','-dpng','-r300');
+
+
+
+end
