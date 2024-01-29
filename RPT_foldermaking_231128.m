@@ -247,5 +247,3 @@ for i = 1:length(files)
     save(crate_save_path, 'CRATE');
     save(gitt_save_path, 'GITT');
 end
-
-
